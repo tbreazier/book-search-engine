@@ -23,7 +23,7 @@ const typeDefs = gql`
 
     type Book {
         bookId: ID
-        authors: [string]
+        authors: [String]
         description: String
         title: String
         image: String
@@ -33,7 +33,16 @@ const typeDefs = gql`
     type Auth {
         token: ID!
         user: User
-      }
+    }
+
+    type savedBook {
+        bookId: String
+        authors: [String]
+        description: String
+        title: String
+        image: String
+        link: String 
+    }
 `;
 
 module.exports = typeDefs;
