@@ -4,7 +4,7 @@
 
 This is Book Search Engine built using the Google Book API. I was tasked with replacing a RESTful API with a Graph QL API with Apollo Server. A screen shot of the site is below.
 
-![Screenshot](./public/Book-search-engine.png)
+![Screenshot](https://github.com/tbreazier/book-search-engine/blob/feature/frontend/client/public/Book-search-engine.png)
 
 ### Link To Site
 
