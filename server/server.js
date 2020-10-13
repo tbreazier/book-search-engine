@@ -8,8 +8,11 @@ const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 
-const PORT = process.env.PORT || 3001;
 const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // create a new Apollo server and pass in our schema data
 const server = new ApolloServer({
   typeDefs,
@@ -19,9 +22,6 @@ const server = new ApolloServer({
 
 // integrate our Apollo server with the Express application as middleware
 server.applyMiddleware({ app });
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Serve up static assets
 if (process.env.NODE_ENV === 'production') {

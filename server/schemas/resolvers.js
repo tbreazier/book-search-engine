@@ -22,39 +22,43 @@ const resolvers = {
       
         return { token, user };
       },
-    login: async (parent, { email, password }) => {
+      login: async (parent, { email, password }) => {
         const user = await User.findOne({ email });
-        const correctPw = await user.isCorrectPassword(password);
-        const token = signToken(user);
-
+  
         if (!user) {
           throw new AuthenticationError('Incorrect credentials');
         }
-      
+  
+        const correctPw = await user.isCorrectPassword(password);
+  
         if (!correctPw) {
-          throw new AuthenticationError('Incorrect credentials');
+          throw new AuthenticationError('Incorrect credentials')
         }
-      
-        return { token, user };
-        },
-    saveBook: async (parent, {input}, context) => {
+  
+        const token = signToken(user);
+        return { token, user }
+      },
+    saveBook: async (parent, {book}, context) => {
         if (context.user) {
             const saveUserBooks = await User.findByIdAndUpdate(
                 { _id: context.user._id },
-                { $push: { savedBooks: input } },
-                { new: true}
+                { $addToSet: { savedBooks: book } },
+                { new: true, runValidators: true}
             );
             return { saveUserBooks };
         }
         throw new AuthenticationError('Not logged in');
     },
     deleteBook: async (parent, {bookId}, context) => {
-        const saveUserBooks = await User.findByIdAndDelete(
+      if (context.user) {
+        const saveUserBooks = await User.findByIdAndUpdate(
             { _id: context.user._id },
             { $pull: { savedBooks: {bookId: bookId} } },
             { new: true}
         )
         return saveUserBooks;
+      }
+      throw new AuthenticationError('Not logged in');
     }
   }
 };
