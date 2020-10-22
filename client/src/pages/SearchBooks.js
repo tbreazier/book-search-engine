@@ -48,14 +48,14 @@ const SearchBooks = () => {
         throw new Error('something went wrong!');
       }
 
-      const { items } = await response.json();
+      const { movies } = await response.json();
+      console.log(response)
 
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authors: book.volumeInfo.authors || ['No author to display'],
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
-        image: book.volumeInfo.imageLinks?.thumbnail || '',
+      const bookData = movies.map((results) => ({
+        bookId: results.id,
+        title: results.title,
+        description: results.overview,
+        image: results.poster_path || '',
       }));
 
       setSearchedBooks(bookData);
@@ -125,22 +125,21 @@ const SearchBooks = () => {
             : 'Search for a book to begin'}
         </h2>
         <CardColumns>
-          {searchedBooks.map((book) => {
+          {searchedBooks.map((movie) => {
             return (
-              <Card key={book.bookId} border='dark'>
-                {book.image ? (
-                  <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' />
+              <Card key={movie.bookId} border='dark'>
+                {movie.image ? (
+                  <Card.Img src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${movie.poster_path}`} alt={`The cover for ${movie.title}`} variant='top' />
                 ) : null}
                 <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
-                  <p className='small'>Authors: {book.authors}</p>
-                  <Card.Text>{book.description}</Card.Text>
+                  <Card.Title>{movie.title}</Card.Title>
+                  <Card.Text>{movie.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                      disabled={savedBookIds?.some((savedBookId) => savedBookId === movie.bookId)}
                       className='btn-block btn-info'
-                      onClick={() => handleSaveBook(book.bookId)}>
-                      {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
+                      onClick={() => handleSaveBook(movie.bookId)}>
+                      {savedBookIds?.some((savedBookId) => savedBookId === movie.bookId)
                         ? 'This book has already been saved!'
                         : 'Save this Book!'}
                     </Button>

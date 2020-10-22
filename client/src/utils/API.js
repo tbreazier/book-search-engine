@@ -53,5 +53,5 @@ export const deleteBook = (bookId, token) => {
 // make a search to google books api
 // https://www.googleapis.com/books/v1/volumes?q=harry+potter
 export const searchGoogleBooks = (query) => {
-  return fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+  return fetch(`https://api.themoviedb.org/3/search/movie?api_key=880251381507cd0cb4e8235985a64cbc&language=en-US&query=${query}&page=1&include_adult=false`);
 };
